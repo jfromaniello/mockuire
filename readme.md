@@ -26,11 +26,14 @@ then we can test as follows:
 ```js
   var mockuire = require("mockuire")(module);
 
-  exports["should allow to mock a simple require"] = function (test) {
-    var mockedPath = { join: function() { return Array.prototype.slice.call(arguments, 0)} },
-        foo = mockuire("./fixture/foo", { path: mockedPath }), 
-
-    var result = foo( "a", "b" );
+  exports.test = function (test) {
+    var mockedPath = { 
+      join: function() { 
+          return Array.prototype.slice.call(arguments, 0).join("!"); 
+        } 
+      },
+      foo = mockuire("./fixture/foo", { path: mockedPath }),
+      result = foo( "a", "b" );
     
     test.equal( result, "a!b!burbujas" );
   }
