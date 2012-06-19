@@ -19,11 +19,12 @@ module.exports = (caller, compilers = {})->
 
   (filePath, mocks) ->
     mocks = mocks or {}
+    fileToLoad = path.resolve path.dirname(caller.filename), filePath
 
     req = req or require
     resolveModule = (module) ->
       return module  if module.charAt(0) isnt "."
-      path.resolve path.dirname(caller.filename), module
+      path.resolve path.dirname(fileToLoad), module
 
     exports = {}
     context =
@@ -35,7 +36,6 @@ module.exports = (caller, compilers = {})->
       module:
         exports: exports
 
-    fileToLoad = path.resolve path.dirname(caller.filename), filePath
 
     vm.runInNewContext tryGetContent(fileToLoad, filePath), context
     context.module.exports
