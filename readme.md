@@ -4,9 +4,15 @@ Dependencies that are not passed will be solved normally.
 
 This module uses [vm.runInNewContext](http://nodejs.org/api/all.html#all_vm_runinnewcontext_code_sandbox_filename) and is heavily inspired by this answer in [stackoverflow](http://stackoverflow.com/a/10869838/234047).
 
+## Install
+
+  npm install mockuire
+
 ## Usage
 
-```foo.js
+Given a file like this one foo.js:
+
+```js
 var path = require("path");
 
 module.exports = function(a, b){
@@ -14,14 +20,14 @@ module.exports = function(a, b){
 };
 ```
 
-Then we can test as follows:
+then we can test as follows:
 
-```test.js
+```js
   var mockuire = require("mockuire")(module);
 
   exports["should allow to mock a simple require"] = function (test) {
     var mockedPath = { join: function() { return Array.prototype.slice.call(arguments, 0)} },
-        foo = loadWrap("./fixture/foo", { path: mockedPath }), 
+        foo = mockuire("./fixture/foo", { path: mockedPath }), 
 
     var result = foo( "a", "b" );
     
@@ -32,15 +38,15 @@ Then we can test as follows:
 You have to pass the module in order to fallback to the module require when needed.
 
 
-## My system under test is .coffee
+## Optional compilers
 
-Don't worry, use this syntax:
+If your [SUT](http://en.wikipedia.org/wiki/System_under_test) is coffee script don't worry, use this syntax:
 
 ```js
-var mockuire = require("mockuire")(module, {"coffee": require("coffee-script")});
+var mockuire = require("mockuire")(module, { "coffee": require("coffee-script") });
 ```
 
-where ".coffee" is the extension and the next thing needs to have a compile function.
+where "coffee" is the extension and the next thing needs to have a compile function.
 
 
 ## Contrib - run tests
