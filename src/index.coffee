@@ -36,6 +36,7 @@ module.exports = (caller, compilers = {})->
       module:
         exports: exports
 
+    context[key] = global[key] for key of global when not(key of context)
 
     vm.runInNewContext tryGetContent(fileToLoad, filePath), context
     context.module.exports

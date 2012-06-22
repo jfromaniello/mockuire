@@ -14,7 +14,8 @@ test = (callback) ->
     --compilers coffee:coffee-script
     --reporter #{REPORTER}
     --require coffee-script 
-    --require should 
+    --require should
+    --globals foo 
     --colors
   ", (err, output) ->
     callback() if callback

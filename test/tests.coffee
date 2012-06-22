@@ -1,6 +1,8 @@
 path = require "path"
 
 describe "mockuire", ->
+  afterEach -> delete global.foo
+
   it "should allow to mock a simple require", ->
     mocker = require("../src/index.coffee")(module)
     foo = mocker "./fixture/foo", 
@@ -37,3 +39,14 @@ describe "mockuire", ->
   it "should fail when it doesnt find the file", ->
     mocker = require("../src/index.coffee")(module)
     ( -> mocker "./notexist", {} ).should.throw("Cannot find module './notexist'")
+
+
+  it "should copy globals to sandbox globals", ->
+    global.foo = 1
+    mocker = require("../src/index.coffee")(module)
+
+    withGlobals = mocker "./fixture/withGlobals", {}
+    
+    result = withGlobals()
+
+    result.should.be.eql 1
