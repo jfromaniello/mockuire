@@ -1,7 +1,13 @@
 {
   "author": "Jose F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com)",
   "name": "mockuire",
-  "description": "require a module with mocked dependencies in node.js",
+  "description": "require a module with mocked dependencies",
+  "keywords": [
+    "tdd",
+    "mock",
+    "testing",
+    "require"
+  ],
   "version": "0.0.0",
   "main": "./lib/index.js",
   "dependencies": {},
