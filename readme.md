@@ -44,7 +44,7 @@ You have to pass the module in order to fallback to the module require when need
 
 ## Optional compilers
 
-If your [SUT](http://en.wikipedia.org/wiki/System_under_test) is coffee script don't worry, use this syntax:
+If your [SUT](http://en.wikipedia.org/wiki/System_under_test) is coffee script use this syntax:
 
 ```js
 var mockuire = require("mockuire")(module, { "coffee": require("coffee-script") });
