@@ -3,7 +3,7 @@ This module allows you to require a module and pass mocks for its dependencies.
 
 Dependencies that are not passed will be solved normally.
 
-This module uses [vm.runInNewContext](http://nodejs.org/api/all.html#all_vm_runinnewcontext_code_sandbox_filename) and is heavily inspired by this answer in [stackoverflow](http://stackoverflow.com/a/10869838/234047).
+This module uses [vm.runInNewContext](http://nodejs.org/api/all.html#all_vm_runinnewcontext_code_sandbox_filename) and is heavily inspired by this answer in [stackoverflow answer](http://stackoverflow.com/a/10869838/234047).
 
 ## Install
 
