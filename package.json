@@ -18,7 +18,7 @@
   },
   "optionalDependencies": {},
   "scripts": {
-    "test": "node ./runtests.js"
+    "test": "mocha --require should --reporter min --globals foo"
   },
   "engines": {
     "node": "*"
