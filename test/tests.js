@@ -14,7 +14,7 @@ describe("mockuire", function() {
               return parts.join("!");
             }
           }
-        }),    
+        }),
         result = foo("a", "b");
 
     result.should.be.eql("a!b!burbujas");
@@ -62,14 +62,29 @@ describe("mockuire", function() {
       return mocker("./notexist", {});
     }).should["throw"]("Cannot find module './notexist'");
   });
-  
+
   it("should copy globals to sandbox globals", function() {
     global.foo = 1;
     var mocker = require("../lib/index")(module),
       withGlobals = mocker("./fixture/withGlobals", {}),
       result = withGlobals();
-    
+
     result.should.be.eql(1);
   });
 
+  it('should be able to use __dirname', function () {
+    var mockuire = require("../lib/index")(module);
+
+    var dirname = mockuire("./fixture/dirname_filename", {}).dirname();
+
+    dirname.should.be.eql(__dirname + '/fixture');
+  });
+
+  it('should be able to use __filename', function () {
+    var mockuire = require("../lib/index")(module);
+
+    var filename = mockuire("./fixture/dirname_filename", {}).filename();
+
+    filename.should.be.eql(__dirname + '/fixture/dirname_filename.js');
+  });
 });
