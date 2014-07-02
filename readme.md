@@ -27,13 +27,18 @@ then we can test as follows:
   var mockuire = require("mockuire")(module);
 
   exports.test = function (test) {
+    //this is the "mock" of the module path 
     var mockedPath = { 
       join: function() { 
           return Array.prototype.slice.call(arguments, 0).join("!"); 
         } 
-      },
-      foo = mockuire("./fixture/foo", { path: mockedPath }),
-      result = foo( "a", "b" );
+      };
+
+    //now I "mockuire" the module under test with the mocked path
+    var foo = mockuire("./fixture/foo", { path: mockedPath });
+    
+    //let's see if it works:
+    result = foo( "a", "b" );
     
     test.equal( result, "a!b!burbujas" );
   }
