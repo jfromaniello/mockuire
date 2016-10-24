@@ -1,4 +1,5 @@
 var path = require("path");
+var assert = require("assert");
 
 describe("mockuire", function() {
   afterEach(function() {
@@ -86,5 +87,52 @@ describe("mockuire", function() {
     var filename = mockuire("./fixture/dirname_filename", {}).filename();
 
     filename.should.be.eql(__dirname + '/fixture/dirname_filename.js');
+  });
+
+  describe('private members', function() {
+
+    describe('\'_private_get\' method', function() {
+      it ('should exist', function() {
+        var mockuire = require("../lib/index")(module);
+        var private = mockuire("./fixture/private");
+
+        assert.equal(typeof private._private_get, 'function');
+      });
+
+      it ('should be able to get value of a private evariable', function() {
+        var mockuire = require("../lib/index")(module);
+        var private = mockuire("./fixture/private");
+        
+        assert.equal(private._private_get('count'), 1);
+      });
+    });
+
+    describe('\'_private_set\' method', function() {
+      it ('should exist', function() {
+        var mockuire = require("../lib/index")(module);
+        var private = mockuire("./fixture/private");
+
+        assert.equal(typeof private._private_set, 'function');
+      });
+
+      it('should be able to set value of a private evariable', function() {
+        var mockuire = require("../lib/index")(module);
+        var private = mockuire("./fixture/private");
+        
+        private._private_set('count', 10);
+        assert.equal(private.inc(), 11);
+      });
+    });
+
+    describe('constructor', function() {
+      it('should be able to set value of a private evariable', function() {
+        var mockuire = require("../lib/index")(module);
+        var props = {
+          count: 100
+        };
+        var private = mockuire("./fixture/private", {}, props);
+        assert.equal(private.inc(), 101);
+      });
+    });
   });
 });
