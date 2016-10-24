@@ -11,7 +11,7 @@ This module uses [vm.runInNewContext](http://nodejs.org/api/all.html#all_vm_runi
 
 ## Usage
 
-Given a file like this one foo.js:
+Given a file like this one `foo.js`:
 
 ```js
 var path = require("path");
@@ -57,7 +57,52 @@ var mockuire = require("mockuire")(module, { "coffee": require("coffee-script") 
 
 where "coffee" is the extension and the next thing needs to have a compile function.
 
+## Private members
+Two new methods will be added to the instance returned by mockuire.
 
+Given a file like `private.js`:
+```js
+var count = 1;
+
+module.exports.inc = function() {
+  return ++count;
+};
+```
+###method: _private_get(name)###
+It allows you to get the value of a private variable:
+```js
+it ('should be able to get value of a private evariable', function() {
+  var mockuire = require("mockuire")(module);
+  var private = mockuire("./fixture/private");
+
+  assert.equal(private._private_get('count'), 1);
+});
+```
+
+###method: _private_set(name, value)###
+It allows you to set the value of a private variable:
+```js
+it ('should be able to get value of a private evariable', function() {
+  var mockuire = require("mockuire")(module);
+  var private = mockuire("./fixture/private");
+
+  private._private_set('count', 10);
+  assert.equal(private.inc(), 11);
+});
+```
+
+You can also set private members in the same moment you pass mocks for its dependencies
+```js
+it('should be able to set value of a private evariable', function() {
+  var mockuire = require("../lib/index")(module);
+  var mocks = {};
+  var props = {
+    count: 100
+  };
+  var private = mockuire("./fixture/private", mocks, props);
+  assert.equal(private.inc(), 101);
+  });
+```
 ## Contrib - run tests
 
   npm test
