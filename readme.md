@@ -64,9 +64,17 @@ Given a file like `private.js`:
 ```js
 var count = 1;
 
+function ping() {
+  return 'pong';
+}
+
 module.exports.inc = function() {
   return ++count;
 };
+
+module.exports.testPing = function() {
+  return ping();
+}
 ```
 ###method: _private_get(name)###
 It allows you to get the value of a private variable:
@@ -103,6 +111,55 @@ it('should be able to set value of a private evariable', function() {
   assert.equal(private.inc(), 101);
   });
 ```
+
+###method: _private_fn(name, [mock])###
+It allows you to get a reference to a private function:
+```js
+it('should be able to get and invoke a private function', function() {
+  var mockuire = require("mockuire")(module);
+  var private = mockuire("./fixture/private");
+
+  var ping = private._private_fn('ping');
+  assert.equal(typeof ping, 'function');
+  assert.equal(ping(), 'pong');
+});
+```
+
+You can also set a mock function:
+```js
+function helloWorld() {
+  return "Hello world!";
+}
+
+var mockuire = require("mockuire")(module);
+var private = mockuire("./fixture/private");
+var pingMocked = private._private_fn('ping', helloWorld);
+
+it('mocked function should invoke the mock function', function() {
+  assert.equal(pingMocked(), 'Hello world!');
+});
+
+it ('module\'s functions should invoke mock function', function() {
+  assert.equal(private.testPing(), 'Hello world!');
+});
+
+it('mocked function has a \'func\' property pointing to the original function', function() {
+  assert.equal(pingMocked.func(), 'pong');
+});
+
+// mocked function has a method to reset to the original function.
+pingMocked.reset();
+
+it('mocked function should be replaced by the original one.', function() {
+  assert.equal(pingMocked(), 'pong');
+});
+
+it ('module\'s functions should invoke the original function', function() {
+  assert.equal(private.testPing(), 'pong');
+});
+
+```
+
 ## Contrib - run tests
 
   npm test
