@@ -46,17 +46,6 @@ then we can test as follows:
 
 You have to pass the module in order to fallback to the module require when needed.
 
-
-## Optional compilers
-
-If your [SUT](http://en.wikipedia.org/wiki/System_under_test) is coffee script use this syntax:
-
-```js
-var mockuire = require("mockuire")(module, { "coffee": require("coffee-script") });
-```
-
-where "coffee" is the extension and the next thing needs to have a compile function.
-
 ## Private members
 Two new methods will be added to the instance returned by mockuire.
 
@@ -163,6 +152,17 @@ it ('module\'s functions should invoke the original function', function() {
 ## Contrib - run tests
 
   npm test
+
+## News
+### v2.0.0
+  1. Friendly with modules of code coverage, like istanbul.
+
+## Breaking changes
+
+### Changes for 2.x
+
+  1.  Does not accept compilers on constructor. This version relies on the infrastrucuture of nodejs in order to load and compile a module.
+
 
 
 ## License 
