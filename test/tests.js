@@ -41,10 +41,9 @@ describe("mockuire", function() {
   });
 
   it("should allow compilers", function() {
-    var mocker = require("../lib/index")(module, {
-        "coffee": require("coffee-script")
-      }),
-      bar = mocker("./fixture/bar", {
+    require("coffee-script");
+    var mocker = require("../lib/index")(module),
+      bar = mocker("./fixture/bar.coffee", {
         "path": {
           "join": function() {
             var parts;
@@ -60,8 +59,8 @@ describe("mockuire", function() {
   it("should fail when it doesnt find the file", function() {
     var mocker = require("../lib/index")(module);
     (function() {
-      return mocker("./notexist", {});
-    }).should["throw"]("Cannot find module './notexist'");
+      return mocker("./notexist");
+    }).should["throw"](/Cannot find module.+notexist/);
   });
 
   it("should copy globals to sandbox globals", function() {
@@ -230,3 +229,4 @@ describe("mockuire", function() {
     });
   });
 });
+
