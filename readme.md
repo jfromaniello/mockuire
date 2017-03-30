@@ -65,7 +65,7 @@ module.exports.testPing = function() {
   return ping();
 }
 ```
-###method: _private_get(name)###
+### method: _private_get(name)
 It allows you to get the value of a private variable:
 ```js
 it ('should be able to get value of a private evariable', function() {
@@ -76,7 +76,7 @@ it ('should be able to get value of a private evariable', function() {
 });
 ```
 
-###method: _private_set(name, value)###
+### method: _private_set(name, value)
 It allows you to set the value of a private variable:
 ```js
 it ('should be able to get value of a private evariable', function() {
@@ -101,7 +101,7 @@ it('should be able to set value of a private evariable', function() {
   });
 ```
 
-###method: _private_fn(name, [mock])###
+### method: _private_fn(name, [mock])
 It allows you to get a reference to a private function:
 ```js
 it('should be able to get and invoke a private function', function() {
@@ -161,7 +161,7 @@ it ('module\'s functions should invoke the original function', function() {
 
 ### Changes for 2.x
 
-  1.  Does not accept compilers on constructor. This version relies on the infrastrucuture of nodejs in order to load and compile a module.
+  1.  Does not accept compilers on constructor. The version 2.x relies on the infrastrucuture of nodejs in order to load and compile a module.
 
 
 
