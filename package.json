@@ -10,7 +10,9 @@
   ],
   "version": "2.0.0",
   "main": "./lib/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "resolve": "^1.3.2"
+  },
   "devDependencies": {
     "coffee-script": "~1.3.3",
     "mocha": "~1.16.0",
