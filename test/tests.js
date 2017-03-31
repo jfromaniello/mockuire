@@ -88,6 +88,12 @@ describe("mockuire", function() {
     filename.should.be.eql(__dirname + '/fixture/dirname_filename.js');
   });
 
+  it('should support modules with more than one require', function() {
+    var mockuire = require("../lib/index")(module);
+    var baz = mockuire("./fixture/baz");
+    assert.equal(baz.ping(), 'pong');
+  });
+
   describe('private members', function() {
     var mockuire = require("../lib/index")(module);
     var private = mockuire("./fixture/private");
