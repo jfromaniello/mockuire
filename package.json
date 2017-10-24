@@ -10,19 +10,16 @@
   ],
   "version": "2.0.2",
   "main": "./lib/index.js",
-  "dependencies": {
-    "resolve": "^1.3.2"
-  },
   "devDependencies": {
     "coffee-script": "~1.3.3",
-    "mocha": "~1.16.0",
-    "should": "~0.6.3"
+    "mocha": "^1.16.2",
+    "should": "^0.6.3"
   },
   "optionalDependencies": {},
   "scripts": {
-    "test": "mocha --require should --reporter min --globals foo"
+    "test": "mocha --require should --reporter spec --globals foo"
   },
   "engines": {
-    "node": "*"
+    "node": ">=4.0.0"
   }
 }
