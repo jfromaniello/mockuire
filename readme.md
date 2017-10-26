@@ -36,10 +36,10 @@ then we can test as follows:
 
     //now I "mockuire" the module under test with the mocked path
     var foo = mockuire("./fixture/foo", { path: mockedPath });
-    
+
     //let's see if it works:
     result = foo( "a", "b" );
-    
+
     test.equal( result, "a!b!burbujas" );
   }
 ```
@@ -52,6 +52,11 @@ Two new methods will be added to the instance returned by mockuire.
 Given a file like `private.js`:
 ```js
 var count = 1;
+var data = {
+  foo: { x: 10 },
+  someFn: function() { return false; }
+
+};
 
 function ping() {
   return 'pong';
@@ -64,20 +69,34 @@ module.exports.inc = function() {
 module.exports.testPing = function() {
   return ping();
 }
+
+module.exports.cloneFoo = function() {
+  return Object.assign({}, data.foo);
+};
+
+module.exports.invoke = function() {
+  return data.someFn();
+};
+
 ```
 ### method: _private_get(name)
 It allows you to get the value of a private variable:
+ * name (Array|string): The path of the property to get.
+
 ```js
 it ('should be able to get value of a private evariable', function() {
   var mockuire = require("mockuire")(module);
   var private = mockuire("./fixture/private");
 
   assert.equal(private._private_get('count'), 1);
+  assert.equal(private._private_get(['data', 'foo', 'x']), 10);
 });
 ```
 
 ### method: _private_set(name, value)
 It allows you to set the value of a private variable:
+ * name (Array|string): The path of the property to get.
+
 ```js
 it ('should be able to get value of a private evariable', function() {
   var mockuire = require("mockuire")(module);
@@ -85,6 +104,9 @@ it ('should be able to get value of a private evariable', function() {
 
   private._private_set('count', 10);
   assert.equal(private.inc(), 11);
+
+  private._private_set(['data', 'foo', 'x'], 20);
+  assert.equal(private.cloneFoo().x, 20);
 });
 ```
 
@@ -103,6 +125,8 @@ it('should be able to set value of a private evariable', function() {
 
 ### method: _private_fn(name, [mock])
 It allows you to get a reference to a private function:
+ * name (Array|string): The path of the property to get.
+
 ```js
 it('should be able to get and invoke a private function', function() {
   var mockuire = require("mockuire")(module);
@@ -111,6 +135,10 @@ it('should be able to get and invoke a private function', function() {
   var ping = private._private_fn('ping');
   assert.equal(typeof ping, 'function');
   assert.equal(ping(), 'pong');
+
+
+  var fn = private._private_fn(['data', 'someFn']);
+  assert.equal(fn(), false);
 });
 ```
 
@@ -120,31 +148,42 @@ function helloWorld() {
   return "Hello world!";
 }
 
+function alwaysTrue() {
+  return true;
+}
+
 var mockuire = require("mockuire")(module);
 var private = mockuire("./fixture/private");
 var pingMocked = private._private_fn('ping', helloWorld);
+var someFnMocked = private._private_fn(['data', 'someFn'], alwaysTrue);
 
 it('mocked function should invoke the mock function', function() {
   assert.equal(pingMocked(), 'Hello world!');
+  assert.equal(someFnMocked(), true);
 });
 
 it ('module\'s functions should invoke mock function', function() {
   assert.equal(private.testPing(), 'Hello world!');
+  assert.equal(private.invoke(), true);
 });
 
 it('mocked function has a \'func\' property pointing to the original function', function() {
   assert.equal(pingMocked.func(), 'pong');
+  assert.equal(someFnMocked.func(), false);
 });
 
 // mocked function has a method to reset to the original function.
 pingMocked.reset();
+someFnMocked.reset();
 
 it('mocked function should be replaced by the original one.', function() {
   assert.equal(pingMocked(), 'pong');
+  assert.equal(someFnMocked(), false);
 });
 
 it ('module\'s functions should invoke the original function', function() {
   assert.equal(private.testPing(), 'pong');
+  assert.equal(private.invoke(), false);
 });
 
 ```
@@ -154,6 +193,11 @@ it ('module\'s functions should invoke the original function', function() {
   npm test
 
 ## News
+### v2.1.0
+  1. Support for setting and getting inner props added.
+  1. Dependency to `resolve` module removed.
+  1. Resolution of module's path improved.
+
 ### v2.0.0
   1. Friendly with modules of code coverage, like istanbul.
 
