@@ -8,7 +8,7 @@
     "testing",
     "require"
   ],
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "./lib/index.js",
   "devDependencies": {
     "coffee-script": "~1.3.3",
